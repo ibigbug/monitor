@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <title>Monitor demo</title>
+  </head>
+  <body>
+
+  </body>
+  <script src="../build/monitor.min.js"></script>
+  <script>
+    var m = new Monitor()
+    m.title('Demo')
+    m.show()
+    m.autoRefresh(1)
+    var updateData = setInterval(function(){
+      m.data(Math.floor(Math.random() * 100))
+    }, 500)
+  </script>
+</html>

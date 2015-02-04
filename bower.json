@@ -1,0 +1,21 @@
+{
+  "name": "monitor",
+  "version": "0.0.1",
+  "homepage": "https://github.com/ibigbug/monitor",
+  "authors": [
+    "Yuwei Ba <i@xiaoba.me>"
+  ],
+  "description": "A float monitor in your browser",
+  "main": "index.js",
+  "keywords": [
+    "moinitor"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
