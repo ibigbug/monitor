@@ -4,7 +4,9 @@ Monitor
 
 ## Installation
 
-  $ bower install monitor
+Install with [bower](http://bower.io)
+
+    $ bower install monitor
 
 ## Usage
 
