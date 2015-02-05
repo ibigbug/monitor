@@ -67,7 +67,8 @@
       _layer.style.cssText = [
         'position: fixed;',
         'top: 4%;',
-        'right: 1%;'
+        'right: 1%;',
+        'z-index: 999999999999;'
       ].join('')
       document.body.appendChild(_layer)
     }
