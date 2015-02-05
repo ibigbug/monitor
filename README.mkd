@@ -12,6 +12,39 @@ Install with [bower](http://bower.io):
 
 See [this](http://jsfiddle.net/ibigbug/wcda9430/#base) fiddle.
 
+
+## API
+
+### (undefined) Monitor(config: String || Object)
+  * String - set the monitor title
+  * Object - with these options:
+    - title: the monitor title
+    - theme: could be `red`, `green`, `blue`
+  * Returns undefined
+
+### (String) Monitor.prototype.title(title: String)
+  * title - Optional. If presented, will set the monitor title
+  * Returns the current title
+
+### (Array) Monitor.prototype.data(data: Array | Number)
+  * data - Could be a Number or an Array:
+    - Number: an number between 0 - 100, will append to the tail of data series
+    - Array: Array of number between 0 - 100, to overrite the whole data
+
+### (undefined) Monitor.prototype.show()
+  * Show the Monitor
+
+### (undefined) Monitor.prototype.hide()
+  * Hide the Monitor
+
+### (undefined) Monitor.prototype.autoRefresh(freq: Number)
+  * freq - a number
+    - If > 0, means refresh `freq` times per second
+    - Else, disable autoFresh
+
+### (undefined) Monitor.prototype.destroy()
+  * Destroy the instance
+
 ## License
 
 The MIT License (MIT)
