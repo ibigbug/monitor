@@ -9,12 +9,27 @@
   </body>
   <script src="../build/monitor.min.js"></script>
   <script>
-    var m = new Monitor()
-    m.title('Demo')
+    var m = new Monitor('Demo')
     m.show()
-    m.autoRefresh(1)
     var updateData = setInterval(function(){
       m.data(Math.floor(Math.random() * 100))
     }, 500)
+    var m2 = new Monitor({
+      title: 'Demo2',
+      theme: 'red'
+    })
+    m2.show()
+    var updateData2 = setInterval(function(){
+      m2.data(Math.floor(Math.random() * 100))
+    }, 500)
+
+    var m3 = new Monitor({
+      title: 'Demo 3',
+      theme: 'blue'
+    })
+    var updateData3 = setInterval(function(){
+      m3.data(Math.floor(Math.random() * 100))
+    }, 500)
+    m3.show()
   </script>
 </html>

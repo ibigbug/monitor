@@ -1,13 +1,40 @@
 (function(window, document, undefined){
-  function Monitor() {
+  var themes = {
+    'green': {
+      color: 'color: green;',
+      borderLeft: 'border-left: 1px solid green;',
+      background: 'background: rgba(0, 200, 0, 0.3);'
+    },
+    'red': {
+      color: 'color: red;',
+      borderLeft: 'border-left: 1px solid red;',
+      background: 'background: rgba(200, 0, 0, 0.3);'
+    },
+    'blue': {
+      color: 'color: blue;',
+      borderLeft: 'border-left: 1px solid blue;',
+      background: 'background: rgba(0, 0, 200, 0.3);'
+    }
+  }
+  var _layer = null
+
+  function Monitor(config) {
+    if (typeof config === 'string') {
+      config = { title: config }
+    }
+    config.theme = config.theme || 'green'
+    this.config = config
     this._frame = createFrame()
-    this._title = createTitle()
-    this._body = createBody()
+    this._title = createTitle(config.theme)
+    this._body = createBody(config.theme)
     this._data = []
     this._freq = 1  // urefresh per second
 
     this.timer = null
     this.setup()
+
+    if (this.config.title)
+      this.title(this.config.title)
   }
 
   Monitor.prototype.title = function (title) {
@@ -35,9 +62,18 @@
   }
 
   Monitor.prototype.setup = function () {
+    if (!_layer) {
+      _layer = document.createElement('div')
+      _layer.style.cssText = [
+        'position: fixed;',
+        'top: 4%;',
+        'right: 1%;'
+      ].join('')
+      document.body.appendChild(_layer)
+    }
     this._frame.appendChild(this._title)
     this._frame.appendChild(this._body)
-    document.body.appendChild(this._frame)
+    _layer.appendChild(this._frame)
   }
 
   Monitor.prototype.refresh = function () {
@@ -47,7 +83,7 @@
     this._body.innerHTML = ''
     for (var i = percent_100; i > start; i --) {
       var index = percent_100 - i
-      Monitor.paint(this._body, data[index], start + index)
+      Monitor.paint(this, data[index], start + index)
     }
   }
 
@@ -75,7 +111,7 @@
     window.clearInterval(this.timer)
   }
 
-  Monitor.paint = function (canvas, height_percent, x) {
+  Monitor.paint = function (self, height_percent, x) {
     var line = document.createElement('div')
     line.style.cssText = [
       'position: absolute;',
@@ -83,9 +119,9 @@
       'bottom: 0;',
       'width: 0;',
       'height: ' + height_percent + '%;',
-      'border-left: 1px solid green;'
+      themes[self.config.theme].borderLeft,
     ].join('')
-    canvas.appendChild(line)
+    self._body.appendChild(line)
   }
 
   function createFrame() {
@@ -93,19 +129,18 @@
     frame.style.cssText = [
       'border: 1px solid black;',
       'background: black;',
-      'position: fixed;',
-      'top: 4%;',
-      'right: 1%;',
+      'position: relative;',
       'width: 100px;',
       'height: 50px;',
-      'display: none;'
+      'display: none;',
+      'margin-bottom: 5px;'
     ].join('')
 
 
     return frame
   }
 
-  function createTitle (titleText) {
+  function createTitle (theme) {
     var title = document.createElement('div')
     title.style.cssText = [
       'position: absolute;',
@@ -113,20 +148,18 @@
       'left: 0;',
       'height: 30%;',
       'width: 100%;',
-      'color: green;',
+      themes[theme].color,
       'font-size: 12px;',
       'font-family: fantasy;'
     ].join('')
-    if (titleText)
-      title.innerHTML = titleText
 
     return title
   }
 
-  function createBody () {
+  function createBody (theme) {
     var body = document.createElement('div')
     body.style.cssText = [
-      'background: rgba(0, 200, 0, 0.3);',
+      themes[theme].background,
       'position: absolute;',
       'left: 0;',
       'top: 30%;',
