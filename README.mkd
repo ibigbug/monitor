@@ -4,13 +4,13 @@ Monitor
 
 ## Installation
 
-Install with [bower](http://bower.io)
+Install with [bower](http://bower.io):
 
     $ bower install monitor
 
 ## Usage
 
-See `demo` folder.
+See [this](http://jsfiddle.net/ibigbug/wcda9430/#base) fiddle.
 
 ## License
 
