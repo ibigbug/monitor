@@ -23,7 +23,7 @@
       config = { title: config }
     }
     config.theme = config.theme || 'green'
-    config.draggable = config.draggable || true
+    config.draggable = isUndefined(config.draggable) ? true : config.draggable
     this.config = config
     this._frame = createFrame()
     this._title = createTitle(config.theme)
@@ -195,18 +195,23 @@
     ele.addEventListener('mousemove', function (evt) {
       if (!ele._dragging) return
       // TODO out of bound check
-      if (typeof offsetX === 'undefined') offsetX = _layer.offsetLeft + parseInt(ele.offsetLeft, 10)
-      if (typeof offsetY === 'undefined') offsetY = _layer.offsetTop + parseInt(ele.offsetTop, 10)
-      ele.style.left = evt.x - offsetX + eleWidth / 2 + 'px'
+      if (isUndefined(offsetX)) {
+        offsetX = _layer.offsetLeft + ele.offsetLeft
+        offsetY = _layer.offsetTop + ele.offsetTop
+      }
+      ele.style.left = evt.x - offsetX - eleWidth / 2 + 'px'
       ele.style.top = evt.y - offsetY - eleHeight / 2 + 'px'
     })
   }
 
   function registerMouseUp (ele) {
     ele.addEventListener('mouseup', function (evt) {
-      console.log(1)
       ele._dragging = false
     })
+  }
+
+  function isUndefined(val) {
+    return typeof val === 'undefined'
   }
 
   window.Monitor = Monitor
