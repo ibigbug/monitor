@@ -18,8 +18,9 @@ See [this](http://jsfiddle.net/ibigbug/wcda9430/#base) fiddle.
 ### (undefined) Monitor(config: String || Object)
   * String - set the monitor title
   * Object - with these options:
-    - title: the monitor title
-    - theme: could be `red`, `green`, `blue`
+    - title(String): the monitor title, default `null`
+    - theme(String): could be `red`, `green`, `blue`, default `green`
+    - draggable(Boolean): enable draggable or not, default `true`
   * Returns undefined
 
 ### (String) Monitor.prototype.title(title: String)

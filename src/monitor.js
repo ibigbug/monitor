@@ -23,6 +23,7 @@
       config = { title: config }
     }
     config.theme = config.theme || 'green'
+    config.draggable = isUndefined(config.draggable) ? true : config.draggable
     this.config = config
     this._frame = createFrame()
     this._title = createTitle(config.theme)
@@ -35,6 +36,7 @@
 
     if (this.config.title)
       this.title(this.config.title)
+
   }
 
   Monitor.prototype.title = function (title) {
@@ -70,11 +72,15 @@
         'right: 1%;',
         'z-index: 999999999999;'
       ].join('')
+      _layer.setAttribute('id', 'yw-monitor-layer')
       document.body.appendChild(_layer)
     }
     this._frame.appendChild(this._title)
     this._frame.appendChild(this._body)
     _layer.appendChild(this._frame)
+
+    if (this.config.draggable)
+      this.draggable()
   }
 
   Monitor.prototype.refresh = function () {
@@ -110,6 +116,12 @@
     this._data = null
     document.body.removeChild(this._frame)
     window.clearInterval(this.timer)
+  }
+
+  Monitor.prototype.draggable = function () {
+    registerMouseDown(this._frame)
+    registerMouseMove(this._frame)
+    registerMouseUp(this._frame)
   }
 
   Monitor.paint = function (self, height_percent, x) {
@@ -170,6 +182,37 @@
     return body
   }
 
+  function registerMouseDown(ele) {
+    ele.addEventListener('mousedown', function (evt) {
+      ele._dragging = true
+    })
+  }
+
+  function registerMouseMove(ele) {
+    var offsetX, offsetY
+    var eleWidth = parseInt(ele.style.width, 10)
+    var eleHeight = parseInt(ele.style.height, 10)
+    ele.addEventListener('mousemove', function (evt) {
+      if (!ele._dragging) return
+      // TODO out of bound check
+      if (isUndefined(offsetX)) {
+        offsetX = _layer.offsetLeft + ele.offsetLeft
+        offsetY = _layer.offsetTop + ele.offsetTop
+      }
+      ele.style.left = evt.x - offsetX - eleWidth / 2 + 'px'
+      ele.style.top = evt.y - offsetY - eleHeight / 2 + 'px'
+    })
+  }
+
+  function registerMouseUp (ele) {
+    ele.addEventListener('mouseup', function (evt) {
+      ele._dragging = false
+    })
+  }
+
+  function isUndefined(val) {
+    return typeof val === 'undefined'
+  }
 
   window.Monitor = Monitor
 })(window, document)
